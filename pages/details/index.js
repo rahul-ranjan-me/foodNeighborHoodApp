@@ -1,11 +1,24 @@
-import React from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
-import { DetailsComp, FooterNav } from '../../components'
+import React, { useState, useEffect } from 'react'
+import { StyleSheet, View } from 'react-native';
+import { DetailsComp, ChefInfo, MiniChat, FooterNav } from '../../components'
+import topFood from "../../fakeJson/topFood";
+import { colors } from '../../utilities';
 
-export default function Details({navigation}) {
+export default function Details({route, navigation}) {
+  const [ food, setFood ] = useState(null)
+  const { params } = route
+  useEffect(() => {
+    const selectedFood = topFood.filter((item) => item.id === params.itemId)
+    setFood(selectedFood[0])
+  }, [params.itemId])
+
   return (
     <View style={styles.container}>
-      <DetailsComp />
+      { food && <View style={styles.detailView}>
+        <DetailsComp selectedFood={food} />
+        <ChefInfo selectedFood={food} />
+        <MiniChat selectedFood={food} />
+      </View> }
       <FooterNav navigation={navigation} />
     </View>
   );
@@ -14,9 +27,11 @@ export default function Details({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ececec',
+    flexDirection:'column',
+    backgroundColor: colors.baseColor,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: Platform.os === 'ios' ? 0 : 30
   },
+  detailView: {
+  }
 });

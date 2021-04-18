@@ -5,6 +5,7 @@ const colors = {
   "primaryCallAction": "#5e10b1",
   "primaryCallActionHover": "#42145f",
   "primaryCallActionText": "#ffffff",
+  "secondaryCallAction": "#c8b9d7",
   "secondaryCallActionHover": "rgba(165,140,195,.1)",
   "spotlightBg": "#5a287d",
   "secondarySpotlightBg": "#f4f0e8",

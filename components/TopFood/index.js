@@ -21,15 +21,16 @@ export default function TopFood(props) {
   })
 
   const createTopFood = (food, key) => {
+    const { name, price, image } = food
     return (
-      <TouchableOpacity key={key} style={styles.card} onPress={() => props.navigation.navigate('Details')}>
+      <TouchableOpacity key={key} style={styles.card} onPress={() => props.navigation.navigate('Details', {itemId: food.id})}>
         <Image source={{
-          uri: food.image,
+          uri: image,
           height: 200,
           width: width - 60
         }} />
-        <Text style={styles.foodName}>{food.name}</Text>
-        <Text style={styles.foodPrice}>Served at only ₹{food.price}</Text>
+        <Text style={styles.foodName}>{name}</Text>
+        <Text style={styles.foodPrice}>Served at only ₹{price}</Text>
       </TouchableOpacity>
     )
   }

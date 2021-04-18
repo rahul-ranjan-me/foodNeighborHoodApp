@@ -42,15 +42,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-end',
     alignContent: 'space-around',
     backgroundColor: colors.white,
     borderWidth: 1,
     borderColor: colors.dividerColor,
-    padding: 8,
     paddingBottom: 15,
     paddingLeft: 30,
     paddingRight: 30,
+    paddingTop: 12,
+    marginBottom: -10,
     width: '100%'
   },
   footerNavItem: {
