@@ -1,14 +1,18 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { 
   StyleSheet, 
   Text, 
   TouchableOpacity, 
-  View 
+  View,
+  Dimensions
 } from 'react-native';
 import { Ionicons, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import { colors } from '../../utilities'
-
+import GlobalContext from '../globalState/globalContext'
+const {width} = Dimensions.get('window')
 export default function TopNav(props) {
+  const { cart, setCart } = useContext(GlobalContext)
+  
   return (
     <View style={styles.container}>
       <View style={styles.footerNavItemLeft}>
@@ -26,8 +30,16 @@ export default function TopNav(props) {
           </View>
         </TouchableOpacity>
       </View>
+      { cart.items && <View style={styles.footerNavItemRightCart}>
+        <TouchableOpacity onPress={() => props.navigation.navigate('Checkout')}>
+          <View style={{alignItems: 'center'}}>
+            <Feather name="shopping-cart" size={32} color={colors.primaryCallAction} /> 
+            <Text>Cart ({Object.keys(cart.items).length})</Text>
+          </View>
+        </TouchableOpacity>
+      </View> }
       <View style={styles.footerNavItemRight}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => props.navigation.navigate('Account')}>
           <View style={{alignItems:'center'}}>
             <MaterialCommunityIcons name="account" size={32} color={colors.primaryCallAction} /> 
             <Text>Account</Text>
@@ -42,8 +54,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'flex-end',
-    alignContent: 'space-around',
     backgroundColor: colors.white,
     borderWidth: 1,
     borderColor: colors.dividerColor,
@@ -51,7 +61,6 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingRight: 30,
     paddingTop: 12,
-    marginBottom: -10,
     width: '100%'
   },
   footerNavItem: {
@@ -59,6 +68,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignContent: 'center',
     marginTop: -30,
+    position: 'absolute',
+    left: width/2 - 45
   },
   postRequestContainer: {
     backgroundColor: colors.white,
@@ -66,7 +77,7 @@ const styles = StyleSheet.create({
     height: 90,
     paddingLeft: 10,
     paddingTop: 10,
-    borderRadius: 50,
+    borderRadius: 50
   },
   postRequest: {
     borderColor: colors.primaryCallAction,
@@ -79,6 +90,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-start',
     alignContent: 'center'
+  },
+  shoppingCart: {
+  }, 
+  footerNavItemRightCart: {
+    flex: 3,
+    alignItems: 'flex-end'
   },
   footerNavItemRight: {
     flex: 1,

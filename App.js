@@ -1,19 +1,26 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Home, Details } from './pages'
+import { Home, Details, Checkout, ManageAddress, MakePayment, Account } from './pages'
+import { GlobalState } from './components'
 
 export default function App() {
   const Stack = createStackNavigator();
   
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{
-        headerShown: false
-      }}>
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Details" component={Details} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <GlobalState>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{
+          headerShown: false
+        }}>
+          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Details" component={Details} />
+          <Stack.Screen name="Checkout" component={Checkout} />
+          <Stack.Screen name="ManageAddress" component={ManageAddress} />
+          <Stack.Screen name="MakePayment" component={MakePayment} />
+          <Stack.Screen name="Account" component={Account} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </GlobalState>
   );
 }

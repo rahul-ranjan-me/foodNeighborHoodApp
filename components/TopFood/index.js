@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {xhrGet, properties, colors} from '../../utilities'
 import topFood from "../../fakeJson/topFood";
-
 import { 
   ScrollView, 
   StyleSheet, 
@@ -11,6 +10,7 @@ import {
   Image, 
   Dimensions 
 } from 'react-native';
+import MiniRating from '../miniRating'
 
 export default function TopFood(props) {
   const { width } = Dimensions.get("window");
@@ -21,16 +21,23 @@ export default function TopFood(props) {
   })
 
   const createTopFood = (food, key) => {
-    const { name, price, image } = food
+    const { name, price, image, chefId } = food
     return (
-      <TouchableOpacity key={key} style={styles.card} onPress={() => props.navigation.navigate('Details', {itemId: food.id})}>
+      <TouchableOpacity key={key} style={styles.card} onPress={() => props.navigation.navigate('Details', {chefId: chefId})}>
         <Image source={{
           uri: image,
           height: 200,
           width: width - 60
         }} />
-        <Text style={styles.foodName}>{name}</Text>
-        <Text style={styles.foodPrice}>Served at only ₹{price}</Text>
+        <View style={styles.priceQuantity}> 
+          <View style={styles.pricings}>
+            <Text style={styles.foodName}>{name}</Text>
+            <Text style={styles.foodPrice}>Served at only ₹{price}</Text>
+          </View>
+          <View style={styles.ratings}>
+            <MiniRating />
+          </View>
+        </View>
       </TouchableOpacity>
     )
   }
@@ -71,5 +78,24 @@ const styles = StyleSheet.create({
 
   foodPrice: {
     color: colors.headingTheme
+  },
+
+  priceQuantity: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignContent: 'center'
+  },
+
+  pricings: {
+    flex: 3
+  },
+
+  ratings: {
+    flex: 1
+  },
+
+  addToCart: {
+    alignItems: 'flex-end',
+    alignContent: 'flex-end'
   }
 });
