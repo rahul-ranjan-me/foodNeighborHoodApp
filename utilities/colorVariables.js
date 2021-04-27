@@ -21,7 +21,8 @@ const colors = {
   "lightDragColor": "rgba(165, 140, 195, .1)",
   "progressIndicatorBg": "#74ba76",
   "progressIndicatorBtn": "#FFC107",
-  "previewBg": "rgba(0, 0, 0, .6)"
+  "previewBg": "rgba(0, 0, 0, .6)",
+  "success": "#429448"
 }
 
 export default colors

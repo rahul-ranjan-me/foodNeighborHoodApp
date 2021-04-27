@@ -9,6 +9,8 @@ import MiniChat from './miniChat'
 import AddToCart from './addToCart'
 import MiniRating from './miniRating'
 import Checkout from './checkout'
+import PersonalDetails from './personalDetails'
+import PastOrder from './pastOrder'
 
 export {
   GlobalState,
@@ -22,4 +24,6 @@ export {
   AddToCart,
   MiniRating,
   Checkout,
+  PersonalDetails,
+  PastOrder
 }

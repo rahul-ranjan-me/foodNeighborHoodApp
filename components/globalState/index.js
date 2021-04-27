@@ -7,6 +7,7 @@ const GlobalState = (props) => {
   const [ cart, setCart ] = useState({})
   const [ usersDetails, setUsersDetails ] = useState(account)
   const [ billAmount, setBillAmount ] = useState(0)
+  
   return(
     <GlobalContext.Provider value={{ 
       cart: cart,

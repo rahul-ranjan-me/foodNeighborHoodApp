@@ -63,7 +63,7 @@ export default function Checkout(props) {
     
     return(
       <View key={key}>
-        { allCartItems[id] && <View style={styles.selectedItem}>
+        { allCartItems && allCartItems[id] && <View style={styles.selectedItem}>
           <View style={styles.restaurantImage}>
             <Image source={{
               uri: image,
@@ -87,7 +87,7 @@ export default function Checkout(props) {
   const billDetails = () => {
     return (
       <View style={styles.billDetailsContainer}>
-        <Text style={{fontWeight: 'bold', fontSize: 14}}>Bill details</Text>
+        <Text style={ {fontWeight: 'bold', fontSize: 14} }>Bill details</Text>
         <View style={styles.billItem}>
           <View style={styles.billParticular}>
             <Text>Item total</Text>
