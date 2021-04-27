@@ -16,7 +16,7 @@ export default function Account({route, navigation}) {
           <View style={styles.pastOrderContainer}>
             { pastOrders.map((pastOrder, key) => <PastOrder navigation={navigation} key={key} pastOrder={pastOrder} userId={userId} />)}
           </View>
-          <TouchableOpacity style={styles.helpContainer()} onPress={() => props.navigation.navigate('Help')}>
+          <TouchableOpacity style={styles.helpContainer()} onPress={() => props.navigation.navigate('Helps')}>
             <Text style={styles.helpHeading}>Help</Text>
             <Text style={styles.link}>FAQs & Contact us &gt;</Text>
           </TouchableOpacity>
