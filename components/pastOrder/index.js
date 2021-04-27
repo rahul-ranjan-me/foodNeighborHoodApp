@@ -4,10 +4,12 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { colors } from '../../utilities'
 import GlobalContext from '../globalState/globalContext'
 import restaurantMenu from '../../fakeJson/restaurantMenu'
+import UIElems from '../uiElems'
 import _ from 'lodash'
 
 export default function PastOrder(props){
   const { userId, pastOrder } = props
+  const { Button } = UIElems
   const { chefId, status, restaurantName, date, amount, orders } = pastOrder 
   const { setCart, cart } = useContext(GlobalContext)
   let orderItems = ''
@@ -74,9 +76,7 @@ export default function PastOrder(props){
         <Text>{ orders.map(order) }</Text>
         <Text style={styles.date}>{date}</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.reorderButton} onPress={ reorder }>
-        <Text style={styles.reorderButtonText}>Reorder</Text>
-      </TouchableOpacity>
+      <Button action={ reorder } type="primary" label="Reorder" containerStyles={{marginTop: 15, width: 150}} />
     </View>
   )
 }

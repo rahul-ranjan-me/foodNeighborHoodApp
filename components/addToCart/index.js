@@ -3,10 +3,13 @@ import { Text, View, StyleSheet, TextInput, TouchableOpacity } from 'react-nativ
 import { Feather } from '@expo/vector-icons'; 
 import { colors } from '../../utilities'
 import GlobalContext from '../globalState/globalContext'
+import UIElems from '../uiElems'
 
 export default function AddToCart(props) {
   const { cart, setCart } = useContext(GlobalContext)
   const [ quantity, setQuantity ] = useState(0)
+  const { Button } = UIElems
+
   const isFirstRender = useRef(true);
 
   useEffect(() => {
@@ -75,11 +78,7 @@ export default function AddToCart(props) {
 
   const showBuyNow = () => {
     return(
-      <TouchableOpacity onPress={() => cartQuantity('add')}>
-        <View style={styles.button}>
-          <Text style={styles.buttonText}>Add to cart</Text>
-        </View>
-      </TouchableOpacity>
+      <Button action={() => cartQuantity('add')} type="primary" label="Add to cart" />
     )
   }
 
@@ -111,13 +110,4 @@ const styles = StyleSheet.create({
     marginRight: 5,
     padding: 5,
   },
-  button: {
-    width: 100,
-    backgroundColor: colors.primaryCallAction,
-    padding: 10,
-  },
-  buttonText: {
-    color: colors.white,
-    textAlign: 'center'
-  }
 })

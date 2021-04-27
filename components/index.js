@@ -11,6 +11,7 @@ import MiniRating from './miniRating'
 import Checkout from './checkout'
 import PersonalDetails from './personalDetails'
 import PastOrder from './pastOrder'
+import UIElems from './uiElems'
 
 export {
   GlobalState,
@@ -25,5 +26,6 @@ export {
   MiniRating,
   Checkout,
   PersonalDetails,
-  PastOrder
+  PastOrder,
+  UIElems
 }

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-nativ
 import { colors } from '../../utilities'
 
 export default function PersonalDetails(props) {
-  const { userId, name, phoneNumber, email, address } = props
+  const { userId, name, phoneNumber, email, address, navigation } = props
   return(
     <View>
       <View style={styles.container}>
@@ -26,8 +26,8 @@ export default function PersonalDetails(props) {
               <Text>{address.postal}</Text>
             </View>
           }
-          <TouchableOpacity style={styles.editDetail}>
-            <Text style={styles.editDetailText}>Add/Manage address</Text>
+          <TouchableOpacity onPress={() => props.navigation.navigate('ManageAddress')} style={styles.editDetail}>
+            <Text style={styles.editDetailText}>Add/Change address</Text>
           </TouchableOpacity>
         </View>
       </View>

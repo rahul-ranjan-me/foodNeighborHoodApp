@@ -11,12 +11,12 @@ export default function Account({route, navigation}) {
     <View style={styles.container}>
       <View style={styles.account}>
         <ScrollView>
-          <PersonalDetails name={name} phoneNumber={phoneNumber} email={email} address={address} userId={userId} />
+          <PersonalDetails navigation={navigation} name={name} phoneNumber={phoneNumber} email={email} address={address} userId={userId} />
           <Text style={styles.heading}>Past Orders</Text>
           <View style={styles.pastOrderContainer}>
             { pastOrders.map((pastOrder, key) => <PastOrder navigation={navigation} key={key} pastOrder={pastOrder} userId={userId} />)}
           </View>
-          <TouchableOpacity style={styles.helpContainer()}>
+          <TouchableOpacity style={styles.helpContainer()} onPress={() => props.navigation.navigate('Help')}>
             <Text style={styles.helpHeading}>Help</Text>
             <Text style={styles.link}>FAQs & Contact us &gt;</Text>
           </TouchableOpacity>

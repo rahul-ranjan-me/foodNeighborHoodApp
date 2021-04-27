@@ -19,7 +19,7 @@ export default function TopNav(props) {
         <Ionicons name="home" size={32} color={colors.primaryCallAction} />  
         <Text>Feed</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.footerNavItem}>
+      <TouchableOpacity style={styles.footerNavItem} onPress={() => props.navigation.navigate('Search')}>
         <Feather name="search" size={32} color={colors.primaryCallAction} />
         <Text>Search</Text>
       </TouchableOpacity>

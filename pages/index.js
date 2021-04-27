@@ -4,6 +4,8 @@ import Checkout from './checkout'
 import ManageAddress from './manageAddress'
 import MakePayment from './makePayment'
 import Account from './account'
+import Help from './help'
+import Search from './search'
 
 export {
   Home,
@@ -11,5 +13,7 @@ export {
   Checkout,
   ManageAddress,
   MakePayment,
-  Account
+  Account,
+  Help,
+  Search
 }
