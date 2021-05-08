@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react'
+import React, {useContext} from 'react'
 import { View, Text, StyleSheet, Alert } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { colors } from '../../utilities'
@@ -47,7 +47,7 @@ export default function PastOrder(props){
       }))
       window.setTimeout(() => {
         props.navigation.navigate('Checkout')
-      })
+      }, 500)
     }
 
     Alert.alert(

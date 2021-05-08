@@ -12,6 +12,8 @@ import Checkout from './checkout'
 import PersonalDetails from './personalDetails'
 import PastOrder from './pastOrder'
 import UIElems from './uiElems'
+import SearchForm from './searchForm'
+import SearchResults from './searchResults'
 
 export {
   GlobalState,
@@ -27,5 +29,7 @@ export {
   Checkout,
   PersonalDetails,
   PastOrder,
-  UIElems
+  UIElems,
+  SearchForm,
+  SearchResults
 }

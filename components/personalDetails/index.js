@@ -1,15 +1,19 @@
-import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
+import React, { useRef } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
 import { colors } from '../../utilities'
+import RBSheet from "react-native-raw-bottom-sheet";
+import EditPersonalDetails from './editPersonalDetails'
 
 export default function PersonalDetails(props) {
   const { userId, name, phoneNumber, email, address, navigation } = props
+  const refRBSheet = useRef();
+  const { height } = Dimensions.get('window')
   return(
     <View>
       <View style={styles.container}>
         <View style={styles.nameEdit}>
           <Text style={styles.name}>{name.toUpperCase()}</Text>
-          <TouchableOpacity style={styles.editDetail}>
+          <TouchableOpacity style={styles.editDetail} onPress={() => refRBSheet.current.open()}>
             <Text style={styles.editDetailText}>Edit</Text>
           </TouchableOpacity>
         </View>
@@ -26,11 +30,27 @@ export default function PersonalDetails(props) {
               <Text>{address.postal}</Text>
             </View>
           }
-          <TouchableOpacity onPress={() => props.navigation.navigate('ManageAddress')} style={styles.editDetail}>
+          <TouchableOpacity onPress={() => refRBSheet.current.open()} style={styles.editDetail}>
             <Text style={styles.editDetailText}>Add/Change address</Text>
           </TouchableOpacity>
         </View>
       </View>
+      <RBSheet
+          ref={refRBSheet}
+          closeOnDragDown={true}
+          closeOnPressMask={false}
+          height={height - 200}
+          customStyles={{
+            wrapper: {
+              backgroundColor: "rgba(0,0,0,.2)"
+            },
+            draggableIcon: {
+              backgroundColor: colors.primaryCallAction
+            }
+          }}
+        >
+          <EditPersonalDetails details={props} />
+        </RBSheet>
     </View>
   )
 }

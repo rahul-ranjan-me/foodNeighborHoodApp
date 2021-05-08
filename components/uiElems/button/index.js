@@ -7,7 +7,7 @@ export default function Button(props) {
   const { action, type, label, containerStyles, textStyles} = props
   styles.containerStyles = containerStyles
   styles.textStyles = textStyles
-
+  
   return (
     <TouchableOpacity onPress={action} style={styles[type]()}>
       <Text style={styles[type+'Text']()}>{label}</Text>

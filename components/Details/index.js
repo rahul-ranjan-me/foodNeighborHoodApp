@@ -20,8 +20,8 @@ export default function DetailsComp(props) {
         <View style={styles.itemImage}>
           <Image source={{
             uri: image,
-            width: 100,
-            height: 100
+            width: 60,
+            height: 60
           }} />
         </View>
         <View style={styles.detailProduct}>
@@ -42,7 +42,7 @@ export default function DetailsComp(props) {
         <Image source={{
           uri: image,
           width: width,
-          height: 300
+          height: 200
         }} />
         <View style={styles.detailsContainer}>
           <View sytle={styles.chefImage}>
@@ -78,24 +78,23 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     flexDirection: 'row',
-    padding: 10,
+    padding: 5,
     borderBottomWidth: 1,
     borderColor: colors.dividerColor,
     alignContent: 'center',
     alignItems: 'center'
   },
   detailProduct: {
-    padding: 15,
+    padding: 10,
     flex: 2,
   },
   foodName: {
-    fontSize: 20,
+    fontSize: 15,
     marginBottom: 10
   },
   restaurantDetails: {
     backgroundColor: colors.white,
     shadowColor:colors.black,
-    marginBottom: 15,
   },
   detailsContainer: {
     flexDirection: 'row',
@@ -114,7 +113,6 @@ const styles = StyleSheet.create({
   },
   foodPrice: {
     color: colors.headingTheme,
-    fontWeight: 'bold'
   },
   chefImage: {
     flex: 1,
