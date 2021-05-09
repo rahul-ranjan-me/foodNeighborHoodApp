@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <resources>
   <string name="app_name">FoodNeighbourhood</string>
+  <string name="facebook_app_id">740253876653293</string>
+  <string name="fb_login_protocol_scheme">fb740253876653293</string>
 </resources>
