@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Home, Details, Checkout, Login, MakePayment, Account, Help, Search } from './pages'
-import { GlobalState } from './components'
+import { GlobalState, GlobalContext } from './components'
 
-export default function App() {
+export function NavigationScreens() {
   const Stack = createStackNavigator();
-  const auth = false
-
+  const { login, setLogin } = useContext(GlobalContext)
+  const [ isLoggedIn, setIsLoggedIn ] = useState(null)
+  
+  useEffect(() => {
+    if(login && Object.keys(login).length > 0){
+      setIsLoggedIn(true)
+    }
+  }, [login])
   const getScreen = () => {
-    if(!auth){
+    if(!isLoggedIn){
       return(
         <Stack.Navigator screenOptions={{
           headerShown: false
@@ -33,12 +39,18 @@ export default function App() {
       )
     }
   }
-  
+  return (
+    <NavigationContainer>
+      {getScreen()}
+    </NavigationContainer>
+  )
+}
+
+
+export default function App() {
   return (
     <GlobalState>
-      <NavigationContainer>
-        {getScreen()}
-      </NavigationContainer>
+      <NavigationScreens />
     </GlobalState>
   );
 }

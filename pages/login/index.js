@@ -1,18 +1,18 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import { colors } from '../../utilities'
 import GoogleLogin from './googleLogin'
-
-import * as Application from 'expo-application';
+import { GlobalContext } from '../../components'
 
 export default function Login({route, navigation}) {
-  console.log(Application.applicationId)
+  const { setLogin } = useContext(GlobalContext)
+
   const onSuccess = (authType, result) => {
     if(authType === 'gmail') {
-      const { accessToken, refreshToken, type, user } = result
-      if(type === 'success') {
-        const { email, name, photoUrl } = user
-      }
+      const { idToken, user } = result
+      const { email, name, photo } = user
+      console.log(email, name)
+      setLogin({email, name, photo, idToken})
     }
   }
 
