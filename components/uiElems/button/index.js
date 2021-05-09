@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   }, styles.textStyles),
   primaryText: () => Object.assign({
-    backgroundColor: colors.primaryCallAction,
     color: colors.white
   }, styles.textCommon()),
   secondaryText: () => Object.assign({

@@ -17,9 +17,18 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ranjrul.foodneighbourhood",
+      "buildNumber": "1.0.0",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "90046069578-rfpm5qe03desnugqv552tos895ath6gb.apps.googleusercontent.com"
+        }
+      }
     },
     "android": {
+      "package": "com.ranjrul.foodneighbourhood",
+      "versionCode": 2,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

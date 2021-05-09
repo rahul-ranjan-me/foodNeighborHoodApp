@@ -20,6 +20,9 @@ export default function Account({route, navigation}) {
             <Text style={styles.helpHeading}>Help</Text>
             <Text style={styles.link}>FAQs & Contact us &gt;</Text>
           </TouchableOpacity>
+          <TouchableOpacity style={styles.helpContainer()} onPress={() => navigation.navigate('Help')}>
+            <Text style={styles.link}>Logout</Text>
+          </TouchableOpacity>
         </ScrollView>
       </View>
       <FooterNav navigation={navigation} />

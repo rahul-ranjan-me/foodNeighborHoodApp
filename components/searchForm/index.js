@@ -12,7 +12,7 @@ export default function SearchForm(props) {
     <View style={styles.container}>
       <TextInput autoCapitalize='none' style={styles.textInput} 
         onChangeText={(text) => getSearchResult(text)} 
-        placeholder="Search for restaurant and foods" />
+        placeholder="Search, minimum 3 characters required" />
     </View>
   )
 }

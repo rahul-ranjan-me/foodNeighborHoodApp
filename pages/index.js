@@ -1,7 +1,7 @@
 import Home from './home'
 import Details from './details'
 import Checkout from './checkout'
-import ManageAddress from './manageAddress'
+import Login from './login'
 import MakePayment from './makePayment'
 import Account from './account'
 import Help from './help'
@@ -11,7 +11,7 @@ export {
   Home,
   Details,
   Checkout,
-  ManageAddress,
+  Login,
   MakePayment,
   Account,
   Help,
