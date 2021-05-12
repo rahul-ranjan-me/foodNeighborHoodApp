@@ -1,8 +1,17 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { Home, Details, Checkout, Login, MakePayment, Account, Help, Search } from './pages'
-import { GlobalState, GlobalContext } from './components'
+import React, {useContext, useState, useEffect} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {Home, Details, Checkout, Login, MakePayment, Account, Help, Search} from './pages'
+import {GlobalState, GlobalContext} from './components'
+import Storage from 'react-native-storage'
+import AsyncStorage from '@react-native-community/async-storage'
+
+global.storage = new Storage({
+  size: 1000,
+  storageBackend: AsyncStorage,
+  defaultExpires: 1000 * 3600 * 24,
+  enableCache: true
+});
 
 export function NavigationScreens() {
   const Stack = createStackNavigator();
@@ -10,10 +19,27 @@ export function NavigationScreens() {
   const [ isLoggedIn, setIsLoggedIn ] = useState(null)
   
   useEffect(() => {
-    if(login && Object.keys(login).length > 0){
-      setIsLoggedIn(true)
-    }
+    storage.load({
+      key: 'loginState'
+    })
+    .then(res => {
+      if(res.token){
+        setIsLoggedIn(true)
+        setLogin(res)
+      }
+    })
+    .catch(err => {
+      switch (err.name) {
+        case 'NotFoundError':
+          setIsLoggedIn(false)
+          break;
+        case 'ExpiredError':
+          setIsLoggedIn(false)
+          break;
+      }
+    })
   }, [login])
+  
   const getScreen = () => {
     if(!isLoggedIn){
       return(

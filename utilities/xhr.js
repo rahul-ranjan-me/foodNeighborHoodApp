@@ -2,7 +2,6 @@ import properties from './properties'
 import axios from 'axios'
 
 const xhrGet = (url, config) => {
-  console.log(url)
   return axios.get(`${properties.apiUrl}${url.replace(/^\/+/, '')}`, config)
 }
 
@@ -11,6 +10,7 @@ const xhrPost = (url, data, config) => {
 }
 
 const xhrPut = (url, data, config) => {
+  console.log(`${properties.apiUrl}${url.replace(/^\/+/, '')}`)
   return axios.put(`${properties.apiUrl}${url.replace(/^\/+/, '')}`, data, config)
 }
 

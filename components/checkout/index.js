@@ -114,7 +114,7 @@ export default function Checkout(props) {
       <View style={styles.addressContainer}>
         <View style={{flex: 2}}> 
           <Text>Delivering order to:</Text>
-          <Text style={{fontWeight: 'bold'}}>{ address.postal }</Text>
+          <Text style={{fontWeight: 'bold'}}>{ address }</Text>
         </View>
         <TouchableOpacity onPress={() => props.navigation.navigate('ManageAddress')}>
           <View style={styles.billAmount}>

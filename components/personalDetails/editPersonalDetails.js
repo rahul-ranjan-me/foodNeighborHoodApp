@@ -1,17 +1,46 @@
-import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
-import { colors } from '../../utilities'
+import React, {useContext} from 'react'
+import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native'
+import GlobalContext from '../globalState/globalContext'
+import {colors, xhrPut} from '../../utilities'
 
 export default function EditPersonalDetails (props) {
   const { name, phoneNumber, email, address } = props.details
+  const { login, setLogin } = useContext(GlobalContext)
+  const globalStorage = global.storage
   const inputValues = {
     name,
     phoneNumber,
     email,
     address
   }
+
   const updatePersonalDetails = () => {
-    console.log(inputValues)
+    const toUpdate = {}
+    Object.keys(inputValues).map(key => {
+      if(inputValues[key] && inputValues[key].length)
+        toUpdate[key] = inputValues[key]
+    })
+
+    globalStorage.load({
+      key: 'loginState'
+    })
+    .then(res => {
+      xhrPut(`/users/${res.username}`, toUpdate, { headers: {
+        'x-access-token': res.token
+      }})
+      .then(response => {
+        const dataToUpdate = Object.assign({}, login, response.data)
+        storage.save({
+          key: 'loginState',
+          data: dataToUpdate
+        })
+        setLogin(dataToUpdate)
+        props.drawerRef.current.close()
+      })
+    })
+    .catch(err => {
+      alert('Unable to update your record. Please try later.')
+    })
   }
 
   return(
@@ -23,7 +52,7 @@ export default function EditPersonalDetails (props) {
       </View>
       <View style={styles.inputWrapper}>
         <Text style={styles.inputLabel}>Phone number</Text>
-        <TextInput style={styles.input} onChangeText={text => inputValues.phoneNumber = text} defaultValue={String(phoneNumber)} />
+        <TextInput style={styles.input} onChangeText={text => inputValues.phoneNumber = text} defaultValue={phoneNumber ? String(phoneNumber) : ''} />
       </View>
       <View style={styles.inputWrapper}>
         <Text style={styles.inputLabel}>Email</Text>
@@ -31,7 +60,7 @@ export default function EditPersonalDetails (props) {
       </View>
       <View style={styles.inputWrapper}>
         <Text style={styles.inputLabel}>Address</Text>
-        <TextInput multiline numberOfLines={4} style={styles.input} onChangeText={text => inputValues.address['postal'] = text} defaultValue={address.postal} />
+        <TextInput multiline numberOfLines={4} style={styles.input} onChangeText={text => inputValues.address = text} defaultValue={address} />
       </View>
 
       <TouchableOpacity style={styles.updateButton} onPress={updatePersonalDetails}>

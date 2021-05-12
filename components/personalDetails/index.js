@@ -25,11 +25,7 @@ export default function PersonalDetails(props) {
       <Text style={styles.postalAddress}>Postal Address</Text>
       <View style={styles.container}>
         <View style={styles.nameEdit}>
-          {address && address.postal &&
-            <View>
-              <Text>{address.postal}</Text>
-            </View>
-          }
+          <View><Text>{address ? address : 'Address not entered'}</Text></View>
           <TouchableOpacity onPress={() => refRBSheet.current.open()} style={styles.editDetail}>
             <Text style={styles.editDetailText}>Add/Change address</Text>
           </TouchableOpacity>
@@ -49,7 +45,7 @@ export default function PersonalDetails(props) {
             }
           }}
         >
-          <EditPersonalDetails details={props} />
+          <EditPersonalDetails details={props} drawerRef={refRBSheet} />
         </RBSheet>
     </View>
   )

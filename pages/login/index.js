@@ -1,25 +1,44 @@
-import React, { useContext } from 'react'
+import React, {useContext} from 'react'
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
-import { colors } from '../../utilities'
+import {colors} from '../../utilities'
 import GoogleLogin from './googleLogin'
 import FacebookLogin from './facebookLogin'
-import { GlobalContext } from '../../components'
+import {GlobalContext} from '../../components'
+import {xhrPost} from '../../utilities/xhr' 
 
 export default function Login({route, navigation}) {
   const { setLogin } = useContext(GlobalContext)
+  const postLogin = (data) => {
+    xhrPost('/users/login', data).then(res => {
+      const {user, token} = res.data
+      const {email, name, photo, username, authType, id, address} = user
+      storage.save({
+        key: 'loginState',
+        data: {
+          id,
+          authType,
+          username,
+          token,
+          email,
+          name,
+          photo,
+          address
+        }
+      })
+      setLogin({id, email, name, photo, token, username, address, authType})
+    })
+  }
 
   const onSuccess = (authType, result) => {
     if(authType === 'gmail') {
-      const { idToken, user } = result
+      const { user } = result
       const { email, name, photo } = user
-      console.log(email, name)
-      setLogin({email, name, photo, idToken})
+      postLogin({userId: email, name, email, photo, authType})
     } else if(authType === 'facebook') {
-      const { id, email, name, picture } = result
-      const { photo } = picture.data.url
-      console.log(email, name)
-      setLogin({email, name, photo, idToken: id})
+      const { email, name, picture } = result
+      postLogin({userId: email, name, email, photo: picture.data.url, authType})
     }
+    
   }
 
   return (

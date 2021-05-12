@@ -1,12 +1,30 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {View, Text, StyleSheet, ScrollView} from 'react-native'
-import { FooterNav, PersonalDetails, PastOrder } from '../../components'
-import { colors } from '../../utilities'
+import {FooterNav, PersonalDetails, PastOrder, GlobalContext} from '../../components'
+import {colors} from '../../utilities'
 import accountDetails from '../../fakeJson/account'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import {TouchableOpacity} from 'react-native-gesture-handler'
+import {xhrGet} from '../../utilities/xhr'
 
 export default function Account({route, navigation}) {
-  const { userId, name, phoneNumber, email, address, pastOrders } = accountDetails
+  const {pastOrders} = accountDetails
+  const {login, setLogin} = useContext(GlobalContext)
+  if(!login) return null
+  const {username:userId, name, phoneNumber, email, address} = login
+
+  const logout = () => {
+    xhrGet('/users/logout').then((res) => {
+      if(res.data.status === 'logout') {
+        storage.remove({
+          key: 'loginState'
+        })
+        setLogin(null)
+      } else {
+        alert('Some error occured')
+      }
+    })
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.account}>
@@ -18,9 +36,9 @@ export default function Account({route, navigation}) {
           </View>
           <TouchableOpacity style={styles.helpContainer()} onPress={() => navigation.navigate('Help')}>
             <Text style={styles.helpHeading}>Help</Text>
-            <Text style={styles.link}>FAQs & Contact us &gt;</Text>
+            <Text style={styles.link}>FAQs &amp; Contact us &gt;</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.helpContainer()} onPress={() => navigation.navigate('Help')}>
+          <TouchableOpacity style={styles.helpContainer()} onPress={logout}>
             <Text style={styles.link}>Logout</Text>
           </TouchableOpacity>
         </ScrollView>
