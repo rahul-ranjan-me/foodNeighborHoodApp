@@ -1,14 +1,19 @@
-import React, { useContext, useEffect } from 'react'
-import {View, Text, StyleSheet, Image, TouchableOpacity, TextInput} from 'react-native'
+import React, {useContext, useEffect, useRef} from 'react'
+import {View, Text, StyleSheet, Image, TouchableOpacity, TextInput, Dimensions} from 'react-native'
 import AddToCart from '../addToCart'
-import { colors } from '../../utilities'
+import {colors} from '../../utilities'
+import EditPersonalDetails from '../personalDetails/editPersonalDetails'
 import GlobalContext from '../globalState/globalContext'
+import RBSheet from "react-native-raw-bottom-sheet"
 
 export default function Checkout(props) {
-  const { usersDetails, setBillAmount, billAmount, setCart, cart } = useContext(GlobalContext)
-  const { allCartItems, checkoutItem } = props
-  const { details, items } = checkoutItem
-  const { address, name, image, deliveryFee, chefId } = details
+  const {usersDetails, setBillAmount, billAmount, setCart, cart} = useContext(GlobalContext)
+  const {allCartItems, checkoutItem} = props
+  const {details, items} = checkoutItem
+  const {address, name, image, deliveryFee, chefId} = details
+  const refRBSheet = useRef();
+  const {height} = Dimensions.get('window')
+
   let totalPrice = 0
 
   useEffect(() => {
@@ -109,14 +114,14 @@ export default function Checkout(props) {
   }
 
   const addressDetails = () => {
-    const { address } = usersDetails
+    const {address} = props
     return (
       <View style={styles.addressContainer}>
         <View style={{flex: 2}}> 
           <Text>Delivering order to:</Text>
-          <Text style={{fontWeight: 'bold'}}>{ address }</Text>
+          <Text style={{fontWeight: 'bold'}}>{ address ? address: 'Address not entered' }</Text>
         </View>
-        <TouchableOpacity onPress={() => props.navigation.navigate('ManageAddress')}>
+        <TouchableOpacity onPress={() => refRBSheet.current.open()}>
           <View style={styles.billAmount}>
             <Text style={styles.addManageAddress}>Add/change address</Text>
           </View>
@@ -126,12 +131,25 @@ export default function Checkout(props) {
   }
   
   const payNow = () => {
+    const proceedToPay = () => {
+      const dataToCheck = ['name', 'address', 'phoneNumber', 'email']
+      const isAllDetails = dataToCheck.every((key) => {
+        return props[key] && props[key].length > 0
+      })
+      
+      if(isAllDetails) {
+        props.navigation.navigate('MakePayment')
+      } else {
+        refRBSheet.current.open()
+      }
+    }
+
     return(
       <View style={styles.billPayContainer}>
         <View style={styles.amountToPay}>
           <Text style={styles.amountToPayText}>₹ {billAmount}</Text>
         </View>
-        <TouchableOpacity style={styles.proceedToPay} onPress={() => props.navigation.navigate('MakePayment')}>
+        <TouchableOpacity style={styles.proceedToPay} onPress={proceedToPay}>
           <View>
             <Text style={styles.proceedToPayText}>Proceed to pay</Text>
           </View>
@@ -148,6 +166,22 @@ export default function Checkout(props) {
       {billDetails()}
       {addressDetails()}
       {payNow()}
+      <RBSheet
+          ref={refRBSheet}
+          closeOnDragDown={true}
+          closeOnPressMask={false}
+          height={height - 200}
+          customStyles={{
+            wrapper: {
+              backgroundColor: "rgba(0,0,0,.2)"
+            },
+            draggableIcon: {
+              backgroundColor: colors.primaryCallAction
+            }
+          }}
+        >
+          <EditPersonalDetails details={props} drawerRef={refRBSheet} />
+        </RBSheet>
     </View>
   )
 }

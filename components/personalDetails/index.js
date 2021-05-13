@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
 import { colors } from '../../utilities'
-import RBSheet from "react-native-raw-bottom-sheet";
+import RBSheet from "react-native-raw-bottom-sheet"
 import EditPersonalDetails from './editPersonalDetails'
 
 export default function PersonalDetails(props) {
@@ -25,7 +25,7 @@ export default function PersonalDetails(props) {
       <Text style={styles.postalAddress}>Postal Address</Text>
       <View style={styles.container}>
         <View style={styles.nameEdit}>
-          <View><Text>{address ? address : 'Address not entered'}</Text></View>
+          <View style={styles.address}><Text>{address ? address : 'Address not entered'}</Text></View>
           <TouchableOpacity onPress={() => refRBSheet.current.open()} style={styles.editDetail}>
             <Text style={styles.editDetailText}>Add/Change address</Text>
           </TouchableOpacity>
@@ -68,10 +68,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-end'
   },
+  address: {
+    flex: 3
+  },
   editDetailText: {
     color: colors.primaryCallAction,
     fontWeight: 'bold',
-    fontSize: 15
+    fontSize: 15,
+    textAlign: 'center'
   },
   postalAddress: {
     fontWeight: 'bold',

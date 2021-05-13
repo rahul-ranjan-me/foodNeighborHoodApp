@@ -1,15 +1,17 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import {View, Text, StyleSheet, ScrollView} from 'react-native'
 import _ from 'lodash'
 import restaurantMenu from "../../fakeJson/restaurantMenu"
-import { FooterNav, Checkout as CheckoutComp, GlobalContext, UIElems } from '../../components'
-import { colors } from '../../utilities'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
+import {FooterNav, Checkout as CheckoutComp, GlobalContext, UIElems} from '../../components'
+import {colors} from '../../utilities'
+import {MaterialCommunityIcons} from '@expo/vector-icons'
 
 export default function Checkout({route, navigation}) {
-  const { cart } = useContext(GlobalContext)
-  const { Button } = UIElems
-  const [ checkoutItem, setCheckoutItem ] = useState({})
+  const {cart, login} = useContext(GlobalContext)
+  const {Button} = UIElems
+  const [checkoutItem, setCheckoutItem] = useState({})
+  const {username:userId, name, phoneNumber, email, address} = login
+
   useEffect(() => {
     const { items } = cart
     let itemInCart = {
@@ -39,7 +41,12 @@ export default function Checkout({route, navigation}) {
       <View style={styles.detailView}>
         
         { (cart && cart.items && checkoutItem.items) ? 
-          <ScrollView><CheckoutComp allCartItems={cart.items} checkoutItem={checkoutItem} navigation={navigation} /></ScrollView> 
+          <ScrollView>
+            <CheckoutComp name={name} phoneNumber={phoneNumber} email={email} 
+              address={address} userId={userId}
+              allCartItems={cart.items} checkoutItem={checkoutItem} 
+              navigation={navigation} />
+          </ScrollView> 
           : emptyCartView() 
         }
         
