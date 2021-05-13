@@ -1,15 +1,15 @@
 const restaurantMenu = {
-  details: {
-    name: 'Namaste India',
-    address: 'Gaur Green City',
-    image: 'https://picsum.photos/id/112/200/300',
-    chefImage: 'https://picsum.photos/id/112/80/80', 
-    chefId: '22',
-    ratingUp: 15,
-    ratingDown: 22,
-    deliveryFee: 30
+  "details": {
+    "name": "Namaste India",
+    "address": "Gaur Green City",
+    "image": "https://picsum.photos/id/112/200/300",
+    "chefImage": "https://picsum.photos/id/112/80/80", 
+    "chefId": "22",
+    "ratingUp": 15,
+    "ratingDown": 22,
+    "deliveryFee": 30
   },
-  menu: [
+  "menu": [
     {
       "name": "Biryani Tikka",
       "image": "https://picsum.photos/id/7/200/300",

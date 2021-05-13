@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import miniRating from '../../fakeJson/miniRating'
+import {xhrPut} from '../../utilities'
 import { FontAwesome } from '@expo/vector-icons'; 
 
-export default function MiniRating() {
+export default function MiniRating(props) {
   const [rating, setRating] = useState([])
+  const globalStorage = global.storage
+  const {foodDetails} = props
   useEffect(() => {
-    setRating(miniRating)
+    setRating(props.rating)
   })
 
   const ratingChosen = (type) => {
@@ -15,7 +17,25 @@ export default function MiniRating() {
     } else {
       rating[0] = rating[0] - 1
     }
-    setRating([...rating])
+    const toUpdate = Object.assign({}, foodDetails, {ratingUp: rating[1], ratingDown: rating[0]})
+    globalStorage.load({
+      key: 'loginState'
+    })
+    .then(res => {
+      xhrPut(`/restaurants/id/${props.chefId}`, {
+        details: toUpdate
+      }, { headers: {
+        'x-access-token': res.token
+      }})
+      .then(response => {
+        setRating([...rating])
+      })
+    })
+    .catch(err => {
+      alert('Unable to fetch the record. Please try later.')
+    })
+
+    // setRating([...rating])
   }
   
   return (

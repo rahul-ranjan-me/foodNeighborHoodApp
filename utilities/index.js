@@ -1,5 +1,5 @@
 import properties from './properties'
-import {xhrGet, xhrPost, xhrPut} from './xhr'
+import {xhrGet, xhrPost, xhrPut, responseMiddleWare} from './xhr'
 import colors from './colorVariables'
 
 export {
@@ -7,5 +7,6 @@ export {
   xhrGet,
   xhrPost,
   xhrPut,
+  responseMiddleWare,
   colors,
 }

@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {xhrGet, properties, colors} from '../../utilities'
-import topFood from "../../fakeJson/topFood";
+import {xhrGet, colors, responseMiddleWare} from '../../utilities'
 import { 
   ScrollView, 
   StyleSheet, 
@@ -15,13 +14,33 @@ import MiniRating from '../miniRating'
 export default function TopFood(props) {
   const { width } = Dimensions.get("window");
   const [ topFoods, setTopFoods ] = useState([])
+  const globalStorage = global.storage
+  const handleResponse = (response) => {
+    setTopFoods(response)
+  }
+  const getTopFoods = () => {
+    globalStorage.load({
+      key: 'loginState'
+    })
+    .then(res => {
+      xhrGet(`/restaurants/top10`, { headers: {
+        'x-access-token': res.token
+      }})
+      .then(response => {
+        responseMiddleWare(response.data, handleResponse, storage)
+      })
+    })
+    .catch(err => {
+      alert('Unable to fetch the record. Please try later.')
+    })
+  }
 
   useEffect(() => {
-    setTopFoods(topFood)
-  })
+    getTopFoods()
+  }, [topFoods.length])
 
   const createTopFood = (food, key) => {
-    const { name, price, image, chefId } = food
+    const { name, address, image, chefId, ratingDown, ratingUp } = food
     return (
       <TouchableOpacity key={key} style={styles.card} onPress={() => props.navigation.navigate('Details', {chefId: chefId})}>
         <Image source={{
@@ -32,10 +51,10 @@ export default function TopFood(props) {
         <View style={styles.priceQuantity}> 
           <View style={styles.pricings}>
             <Text style={styles.foodName}>{name}</Text>
-            <Text style={styles.foodPrice}>Served at only ₹{price}</Text>
+            <Text style={styles.foodPrice}>{address}</Text>
           </View>
           <View style={styles.ratings}>
-            <MiniRating />
+            <MiniRating rating={[ratingDown, ratingUp]} foodDetails={food} chefId={chefId} />
           </View>
         </View>
       </TouchableOpacity>

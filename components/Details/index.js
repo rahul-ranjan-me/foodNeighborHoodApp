@@ -10,7 +10,7 @@ export default function DetailsComp(props) {
   const { width } = Dimensions.get("window")
   const { menu =[], details = {} } = resturant
   useEffect(() => {
-    setResturant(restaurantMenu)
+    setResturant(props.selectedFood)
   })
 
   const menuItem = (item, key) => {
@@ -34,7 +34,7 @@ export default function DetailsComp(props) {
     </View>
     )
   }
-  const { name, address, image } = details
+  const { name, address, image, ratingUp, ratingDown, chefId } = details
 
   const restaurantDetails = () => {
     return (
@@ -57,7 +57,7 @@ export default function DetailsComp(props) {
             <Text style={styles.restaurantDetailsAddress}>{address}</Text>
           </View>
           <View style={styles.miniRating}>
-            <MiniRating />
+            <MiniRating rating={[ratingDown, ratingUp]} foodDetails={details} chefId={chefId} />
           </View>
         </View>
         
