@@ -1,24 +1,25 @@
-import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, ScrollView } from 'react-native';
-import { DetailsComp, ChefInfo, MiniChat, FooterNav } from '../../components'
-import topFood from "../../fakeJson/topFood";
-import { xhrGet, colors } from '../../utilities';
+import React, {useState, useEffect} from 'react'
+import {StyleSheet, View, ScrollView} from 'react-native';
+import {DetailsComp, ChefInfo, MiniChat, FooterNav} from '../../components'
+import {xhrGet, colors, responseMiddleWare} from '../../utilities';
 
 export default function Details({route, navigation}) {
   const [ food, setFood ] = useState({})
-  const { params } = route
+  const {params} = route
   const globalStorage = global.storage
-
+  const handleResponse = (response) => {
+    setFood(response)
+  }
   const getRestaurantDetails = () => {
     globalStorage.load({
       key: 'loginState'
     })
     .then(res => {
-      xhrGet(`/restaurants/id/${params.chefId}`, { headers: {
+      xhrGet(`/restaurants/id/${params.chefId}`, {headers: {
         'x-access-token': res.token
       }})
       .then(response => {
-        setFood(response.data)
+        responseMiddleWare(response.data, handleResponse, globalStorage)
       })
     })
     .catch(err => {
@@ -32,7 +33,7 @@ export default function Details({route, navigation}) {
   
   return (
     <View style={styles.container}>
-      { food && food.details && <View style={styles.detailView}>
+      {food && food.details && <View style={styles.detailView}>
         <ScrollView>
           <DetailsComp selectedFood={food} />
           <ChefInfo selectedFoodDetails={food.details} />

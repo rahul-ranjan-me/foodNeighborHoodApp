@@ -1,7 +1,7 @@
 import React, {useContext} from 'react'
 import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native'
 import GlobalContext from '../globalState/globalContext'
-import {colors, xhrPut} from '../../utilities'
+import {colors, xhrPut, responseMiddleWare} from '../../utilities'
 
 export default function EditPersonalDetails (props) {
   const { name, phoneNumber, email, address } = props.details
@@ -21,6 +21,16 @@ export default function EditPersonalDetails (props) {
         toUpdate[key] = inputValues[key]
     })
 
+    const handleResponse = (response) => {
+      const dataToUpdate = Object.assign({}, login, response.data)
+      storage.save({
+        key: 'loginState',
+        data: dataToUpdate
+      })
+      setLogin(dataToUpdate)
+      props.drawerRef.current.close()
+    }
+
     globalStorage.load({
       key: 'loginState'
     })
@@ -29,13 +39,7 @@ export default function EditPersonalDetails (props) {
         'x-access-token': res.token
       }})
       .then(response => {
-        const dataToUpdate = Object.assign({}, login, response.data)
-        storage.save({
-          key: 'loginState',
-          data: dataToUpdate
-        })
-        setLogin(dataToUpdate)
-        props.drawerRef.current.close()
+        responseMiddleWare(response, handleResponse, globalStorage)
       })
     })
     .catch(err => {

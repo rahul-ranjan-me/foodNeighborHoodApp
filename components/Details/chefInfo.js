@@ -3,7 +3,6 @@ import { StyleSheet, View, Text, Image } from 'react-native';
 import {colors} from '../../utilities'
 
 export default function ChefInfo(props) {
-  console.log(props)
   const { chefName, chefImage, chefId } = props.selectedFoodDetails
 
   return (

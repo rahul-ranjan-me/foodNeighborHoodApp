@@ -1,9 +1,8 @@
 import React, {useContext, useState, useEffect} from 'react'
 import {View, Text, StyleSheet, ScrollView} from 'react-native'
 import _ from 'lodash'
-import restaurantMenu from "../../fakeJson/restaurantMenu"
 import {FooterNav, Checkout as CheckoutComp, GlobalContext, UIElems} from '../../components'
-import {colors} from '../../utilities'
+import {colors, xhrGet, responseMiddleWare} from '../../utilities'
 import {MaterialCommunityIcons} from '@expo/vector-icons'
 
 export default function Checkout({route, navigation}) {
@@ -12,18 +11,42 @@ export default function Checkout({route, navigation}) {
   const [checkoutItem, setCheckoutItem] = useState({})
   const {username:userId, name, phoneNumber, email, address} = login
 
-  useEffect(() => {
-    const { items } = cart
+  const globalStorage = global.storage
+  const handleResponse = (restaurantMenu) => {
+    const {items} = cart
     let itemInCart = {
       details: restaurantMenu.details,
       items: []
     }
     for(let item in items) {
-      const selectedItem = _.find(restaurantMenu.menu, {'id': Number(item)})
+      const selectedItem = _.find(restaurantMenu.menu, {'id': item})
       itemInCart.items.push(selectedItem)
     }
     setCheckoutItem(itemInCart)
-  }, [cart.items && cart.items.length])
+  }
+
+  const getRestaurantDetails = (chefId) => {
+    globalStorage.load({
+      key: 'loginState'
+    })
+    .then(res => {
+      xhrGet(`/restaurants/id/${chefId}`, { headers: {
+        'x-access-token': res.token
+      }})
+      .then(response => {
+        responseMiddleWare(response.data, handleResponse, globalStorage)
+      })
+    })
+    .catch(err => {
+      console.log(err)
+      alert('Unable to fetch the record. Please try later.')
+    })
+  }
+
+  useEffect(() => {
+    const { chefId } = cart
+    getRestaurantDetails(chefId)
+  }, [cart.chefId])
 
   const emptyCartView = function() {
     return(
