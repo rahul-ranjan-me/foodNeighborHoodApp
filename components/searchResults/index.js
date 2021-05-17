@@ -37,7 +37,7 @@ export default function SearchResults(props) {
   return(
     <ScrollView>
       <View style={styles.container}>
-        { results.length > 1 ? results.map(showResult) : showEmpty() }
+        { results.length > 0 ? results.map(showResult) : showEmpty() }
       </View>      
     </ScrollView>
   )

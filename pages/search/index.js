@@ -1,17 +1,35 @@
 import React, {useState} from 'react'
-import {View, Text, StyleSheet, ScrollView} from 'react-native'
-import { FooterNav, SearchForm, SearchResults, TopNav } from '../../components'
-import { colors } from '../../utilities'
-import topFood from '../../fakeJson/topFood'
+import {View, StyleSheet, ScrollView} from 'react-native'
+import {FooterNav, SearchForm, SearchResults, TopNav} from '../../components'
+import {colors, xhrGet, responseMiddleWare} from '../../utilities'
 
 export default function Search({route, navigation}) {
   const [ searchResults, setSearchResults ] = useState([])
+  const globalStorage = global.storage
+
+  const handleResponse = (response) => {
+    setSearchResults(response)
+  }
   const getSearchResult = (term) => {
-    if(term.length > 2) {
-      setSearchResults(topFood)
-    } else {
+    if(term.length < 3) {
       setSearchResults([])
+      return
     }
+  
+    globalStorage.load({
+      key: 'loginState'
+    })
+    .then(res => {
+      xhrGet(`/restaurants/search?q=${term}`, { headers: {
+        'x-access-token': res.token
+      }})
+      .then(response => {
+        responseMiddleWare(response.data, handleResponse, storage)
+      })
+    })
+    .catch(err => {
+      alert('Unable to fetch the record. Please try later.')
+    })
   }
 
   return (
