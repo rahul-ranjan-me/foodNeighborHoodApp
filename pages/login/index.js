@@ -1,5 +1,5 @@
 import React, {useContext} from 'react'
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
+import {View, StyleSheet} from 'react-native'
 import {colors} from '../../utilities'
 import GoogleLogin from './googleLogin'
 import FacebookLogin from './facebookLogin'
@@ -38,12 +38,13 @@ export default function Login({route, navigation}) {
       const { email, name, picture } = result
       postLogin({userId: email, name, email, photo: picture.data.url, authType})
     }
-    
   }
 
   return (
     <View style={styles.container}>
-      <GoogleLogin onSuccess={(result) => onSuccess('gmail', result)} />
+      <View style={{marginBottom: 20}}>
+        <GoogleLogin onSuccess={(result) => onSuccess('gmail', result)} />
+      </View>
       <FacebookLogin onSuccess={(result) => onSuccess('facebook', result)} />
     </View>
   )
@@ -56,5 +57,6 @@ const styles = StyleSheet.create({
     paddingTop: 35,
     alignContent: 'center',
     alignItems: 'center',
-  }
+    paddingTop: '30%'
+  },
 })

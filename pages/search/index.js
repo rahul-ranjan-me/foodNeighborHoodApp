@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {View, StyleSheet, ScrollView} from 'react-native'
+import {View, StyleSheet, ScrollView, Platform} from 'react-native'
 import {FooterNav, SearchForm, SearchResults, TopNav} from '../../components'
 import {colors, xhrGet, responseMiddleWare} from '../../utilities'
 
@@ -40,7 +40,6 @@ export default function Search({route, navigation}) {
           <SearchResults results={searchResults} navigation={navigation} />
         </ScrollView>
       </View>
-      <TopNav />
       <FooterNav navigation={navigation} />
     </View>
   )
@@ -51,9 +50,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection:'column',
     backgroundColor: colors.baseColor,
+    paddingTop: Platform.OS === 'ios' ? 30 : 0
   },
   search: {
     flex: 15,
-    marginTop: 35,
   }
 })

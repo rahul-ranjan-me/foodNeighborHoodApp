@@ -1,5 +1,5 @@
 import React, {useContext} from 'react'
-import {View, Text, StyleSheet, ScrollView} from 'react-native'
+import {View, Text, StyleSheet, ScrollView, Platform} from 'react-native'
 import {FooterNav, PersonalDetails, PastOrder, GlobalContext} from '../../components'
 import {colors} from '../../utilities'
 import accountDetails from '../../fakeJson/account'
@@ -53,10 +53,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection:'column',
     backgroundColor: colors.baseColor,
+    paddingTop: Platform.OS === 'ios' ? 30 : 0
   },
   account: {
     flex: 15,
-    marginTop: 35,
   },
   heading: {
     fontSize: 15,

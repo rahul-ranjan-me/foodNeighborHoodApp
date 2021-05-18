@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {xhrGet, colors, responseMiddleWare} from '../../utilities'
+import React from 'react';
+import {colors} from '../../utilities'
 import { 
   ScrollView, 
   StyleSheet, 
@@ -13,32 +13,7 @@ import MiniRating from '../miniRating'
 
 export default function TopFood(props) {
   const { width } = Dimensions.get("window");
-  const [ topFoods, setTopFoods ] = useState([])
-  const globalStorage = global.storage
-  const handleResponse = (response) => {
-    setTopFoods(response)
-  }
-  const getTopFoods = () => {
-    globalStorage.load({
-      key: 'loginState'
-    })
-    .then(res => {
-      xhrGet(`/restaurants/top10`, { headers: {
-        'x-access-token': res.token
-      }})
-      .then(response => {
-        responseMiddleWare(response.data, handleResponse, storage)
-      })
-    })
-    .catch(err => {
-      alert('Unable to fetch the record. Please try later.')
-    })
-  }
-
-  useEffect(() => {
-    getTopFoods()
-  }, [topFoods.length])
-
+  
   const createTopFood = (food, key) => {
     const { name, address, image, chefId, ratingDown, ratingUp } = food
     return (
@@ -64,7 +39,7 @@ export default function TopFood(props) {
   return (
     <View style={styles.container}>
       <ScrollView>
-          {topFoods.map(createTopFood)}
+          {props.topFoods.map(createTopFood)}
       </ScrollView>
     </View>
   );
@@ -73,7 +48,6 @@ export default function TopFood(props) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'center',
     alignContent: 'space-around',
     padding: 10,
     flex: 15

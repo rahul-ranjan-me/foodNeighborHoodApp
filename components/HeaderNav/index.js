@@ -10,7 +10,7 @@ import {
   View 
 } from 'react-native';
 
-export default function TopNav() {
+export default function TopNav(props) {
   const [topNavs, SetTopNavs] = useState([])
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function TopNav() {
 
   const createTopNav = (nav, key) => {
     return (
-      <TouchableOpacity key={key} style={styles.button} onPress={() => console.log(nav.name)}>
+      <TouchableOpacity key={key} style={styles.button} onPress={() => props.getTopFoods(nav.name)}>
         <Text>{nav.name}</Text>
       </TouchableOpacity>
     )

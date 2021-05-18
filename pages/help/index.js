@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, Text, StyleSheet, ScrollView} from 'react-native'
+import {View, Text, StyleSheet, ScrollView, Platform} from 'react-native'
 import { FooterNav } from '../../components'
 import { colors } from '../../utilities'
 
@@ -21,10 +21,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection:'column',
     backgroundColor: colors.baseColor,
+    paddingTop: Platform.OS === 'ios' ? 30 : 0
   },
   helpPage: {
     flex: 15,
-    marginTop: 35,
     alignContent: 'center',
     alignItems: 'center',
   }
