@@ -28,17 +28,20 @@ export default function AddToCart(props) {
       if(newCart.items && Object.keys(newCart.items).length && newCart.chefId === props.details.chefId){
         newCart.items[props.item.id] = {
           quantity: quantity,
-          price: props.item.price
+          price: props.item.price,
+          name: props.item.name
         }
       } else {
         newCart = {
           items: {
             [props.item.id]: {
               quantity: 1,
-              price: props.item.price
+              price: props.item.price,
+              name: props.item.name
             }
           },
-          chefId: props.details.chefId
+          chefId: props.details.chefId,
+          restaurantName: props.details.name
         }
       }
     } else if(newCart.items && newCart.items[props.item.id]) {

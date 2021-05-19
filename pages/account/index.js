@@ -1,16 +1,44 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {View, Text, StyleSheet, ScrollView, Platform} from 'react-native'
 import {FooterNav, PersonalDetails, PastOrder, GlobalContext} from '../../components'
 import {colors} from '../../utilities'
 import accountDetails from '../../fakeJson/account'
 import {TouchableOpacity} from 'react-native-gesture-handler'
-import {xhrGet} from '../../utilities/xhr'
+import {xhrGet, responseMiddleWare} from '../../utilities/xhr'
 
 export default function Account({route, navigation}) {
-  const {pastOrders} = accountDetails
+  const [pastOrders, setPastOrders] = useState([])
   const {login, setLogin} = useContext(GlobalContext)
   if(!login) return null
   const {username:userId, name, phoneNumber, email, address} = login
+
+  const globalStorage = global.storage
+  const handleResponse = (response) => {
+    setPastOrders(response[0].pastOrders)
+  }
+
+  const getPastOrders = () => {
+    globalStorage.load({
+      key: 'loginState'
+    })
+    .then(res => {
+      xhrGet(`/pastorders/${userId}`, { headers: {
+        'x-access-token': res.token
+      }})
+      .then(response => {
+        responseMiddleWare(response.data, handleResponse, globalStorage)
+      })
+    })
+    .catch(err => {
+      console.log(err)
+      alert('Unable to fetch the record. Please try later.')
+    })
+  }
+
+
+  useEffect(() => {
+    getPastOrders()
+  }, [pastOrders.length])
 
   const logout = () => {
     xhrGet('/users/logout').then((res) => {

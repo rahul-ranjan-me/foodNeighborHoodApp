@@ -1,17 +1,16 @@
 import React, {useContext} from 'react'
 import { View, Text, StyleSheet, Alert } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { colors } from '../../utilities'
+import { colors, xhrGet, responseMiddleWare } from '../../utilities'
 import GlobalContext from '../globalState/globalContext'
-import restaurantMenu from '../../fakeJson/restaurantMenu'
 import UIElems from '../uiElems'
 import _ from 'lodash'
 
 export default function PastOrder(props){
-  const { userId, pastOrder } = props
+  const { pastOrder } = props
   const { Button } = UIElems
   const { chefId, status, restaurantName, date, amount, orders } = pastOrder 
-  const { setCart, cart } = useContext(GlobalContext)
+  const { setCart } = useContext(GlobalContext)
   let orderItems = ''
 
   const getStyleStatus = (status) => {
@@ -30,7 +29,28 @@ export default function PastOrder(props){
     }
   }
 
+  const globalStorage = global.storage
+  const handleResponse = (response) => {
+    reorderMenu(response)
+  }
   const reorder = () => {
+    globalStorage.load({
+      key: 'loginState'
+    })
+    .then(res => {
+      xhrGet(`/restaurants/id/${chefId}`, {headers: {
+        'x-access-token': res.token
+      }})
+      .then(response => {
+        responseMiddleWare(response.data, handleResponse, globalStorage)
+      })
+    })
+    .catch(err => {
+      alert('Unable to fetch the record. Please try later.')
+    })
+  }
+
+  const reorderMenu = (restaurantMenu) => {
     const orderFromReorder = () => {
       const foodItemToOrder = {}
       for(var item in orders){
@@ -43,6 +63,7 @@ export default function PastOrder(props){
       }
       setCart(Object.assign({}, {
         chefId: String(chefId),
+        restaurantName: restaurantMenu.details.name,
         items: foodItemToOrder
       }))
       window.setTimeout(() => {

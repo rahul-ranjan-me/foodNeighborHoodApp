@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, Text, Image, Dimensions } from 'react-native'
 import { colors } from '../../utilities'
-import restaurantMenu from "../../fakeJson/restaurantMenu"
 import MiniRating from '../miniRating'
 import AddToCart from '../addToCart'
 

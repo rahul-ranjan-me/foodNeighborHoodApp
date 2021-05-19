@@ -1,29 +1,67 @@
 import React, {useContext, useEffect, useState} from 'react'
 import {View, Text, StyleSheet, ScrollView, Platform, TouchableOpacity} from 'react-native'
 import {GlobalContext, FooterNav} from '../../components'
-import { colors } from '../../utilities'
+import { colors, getDate, xhrPost, responseMiddleWare } from '../../utilities'
 import { AntDesign } from '@expo/vector-icons'; 
 import { MaterialIcons } from '@expo/vector-icons'; 
 import {UIElems} from '../../components'
 
 export default function MakePayment({route, navigation}) {
-  const {cart, setCart} = useContext(GlobalContext)
-  const {items, chefId} = cart
+  const {cart, setCart, login} = useContext(GlobalContext)
+  const {items, chefId, restaurantName} = cart
   const { Button } = UIElems
   const [paymentMade, setPaymentMade] = useState(false)
+  const { username } = login
+  const constructOrderDetails = {
+    chefId: chefId,
+    restaurantName: restaurantName,
+  } 
 
   const getTotalPaymentAmount = () => {
     let totalAmount = 0
+    let orders = []
     for(var a in items) {
+      const curOrder = {
+        itemId: a,
+        itemName: items[a].name,
+        quantity: items[a].quantity
+      }
+      orders.push(curOrder)
       totalAmount += items[a].price*items[a].quantity
     }
+    constructOrderDetails.orders = orders
+    constructOrderDetails.amount = totalAmount
     return totalAmount
   }
 
-  const makePayment = () => {
+  const globalStorage = global.storage
+  const handleResponse = () => {
     setCart({})
     setPaymentMade(true)
-    console.log('make payement')
+  }
+
+  const submitDetails = () => {
+    globalStorage.load({
+      key: 'loginState'
+    })
+    .then(res => {
+      xhrPost(`/pastorders/${username}`, constructOrderDetails, { headers: {
+        'x-access-token': res.token
+      }})
+      .then(response => {
+        responseMiddleWare(response.data, handleResponse, globalStorage)
+      })
+    })
+    .catch(err => {
+      console.log(err)
+      alert('Unable to fetch the record. Please try later.')
+    })
+  }
+
+  const makePayment = () => {
+    constructOrderDetails.status = 'Delivered'
+    constructOrderDetails.date = getDate()
+    submitDetails()
   }
 
 
