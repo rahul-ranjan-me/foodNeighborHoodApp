@@ -11,7 +11,7 @@ export default function Login({route, navigation}) {
   const postLogin = (data) => {
     xhrPost('/users/login', data).then(res => {
       const {user, token} = res.data
-      const {email, name, photo, username, authType, id, address} = user
+      const {email, name, photo, username, authType, id, address, phoneNumber} = user
       storage.save({
         key: 'loginState',
         data: {
@@ -20,12 +20,13 @@ export default function Login({route, navigation}) {
           username,
           token,
           email,
+          phoneNumber,
           name,
           photo,
           address
         }
       })
-      setLogin({id, email, name, photo, token, username, address, authType})
+      setLogin({id, email, name, photo, token, username, address, phoneNumber, authType})
     })
   }
 

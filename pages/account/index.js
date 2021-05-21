@@ -2,14 +2,15 @@ import React, {useContext, useEffect, useState} from 'react'
 import {View, Text, StyleSheet, ScrollView, Platform} from 'react-native'
 import {FooterNav, PersonalDetails, PastOrder, GlobalContext} from '../../components'
 import {colors} from '../../utilities'
-import accountDetails from '../../fakeJson/account'
+import { useIsFocused } from "@react-navigation/native";
 import {TouchableOpacity} from 'react-native-gesture-handler'
 import {xhrGet, responseMiddleWare} from '../../utilities/xhr'
 
 export default function Account({route, navigation}) {
-  const [pastOrders, setPastOrders] = useState([])
   const {login, setLogin} = useContext(GlobalContext)
   if(!login) return null
+  const [pastOrders, setPastOrders] = useState([])
+  const isFocused = useIsFocused();
   const {username:userId, name, phoneNumber, email, address} = login
 
   const globalStorage = global.storage
@@ -35,18 +36,17 @@ export default function Account({route, navigation}) {
     })
   }
 
-
   useEffect(() => {
     getPastOrders()
-  }, [pastOrders.length])
+  }, [isFocused])
 
   const logout = () => {
     xhrGet('/users/logout').then((res) => {
       if(res.data.status === 'logout') {
+        setLogin(null)
         storage.remove({
           key: 'loginState'
         })
-        setLogin(null)
       } else {
         alert('Some error occured')
       }

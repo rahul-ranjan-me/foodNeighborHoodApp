@@ -5,7 +5,7 @@ import RBSheet from "react-native-raw-bottom-sheet"
 import EditPersonalDetails from './editPersonalDetails'
 
 export default function PersonalDetails(props) {
-  const { userId, name, phoneNumber, email, address, navigation } = props
+  const { name, phoneNumber, email, address, navigation } = props
   const refRBSheet = useRef();
   const { height } = Dimensions.get('window')
   return(

@@ -13,7 +13,6 @@ export default function EditPersonalDetails (props) {
     email,
     address
   }
-
   const updatePersonalDetails = () => {
     const toUpdate = {}
     Object.keys(inputValues).map(key => {

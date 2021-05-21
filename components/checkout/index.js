@@ -170,7 +170,7 @@ export default function Checkout(props) {
           ref={refRBSheet}
           closeOnDragDown={true}
           closeOnPressMask={false}
-          height={height - 200}
+          height={height - 30}
           customStyles={{
             wrapper: {
               backgroundColor: "rgba(0,0,0,.2)"

@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
+import { useIsFocused } from "@react-navigation/native";
 import { TopNav, TopFood, FooterNav } from '../../components'
 import { colors, xhrGet, responseMiddleWare } from '../../utilities';
 
-export default function Home({navigation}) {
+export default function Home({route, navigation}) {
   const [ topFoods, setTopFoods ] = useState([])
+  const isFocused = useIsFocused();
 
   const globalStorage = global.storage
   const handleResponse = (response) => {
@@ -35,8 +37,7 @@ export default function Home({navigation}) {
 
   useEffect(() => {
     getTopFoods()
-  }, [topFoods.length < 1])
-
+  }, [isFocused])
 
   return (
     <View style={styles.container}>
