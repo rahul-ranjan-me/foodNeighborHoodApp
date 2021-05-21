@@ -1,20 +1,22 @@
-import React from 'react'
-import { StyleSheet, View, Text, Image } from 'react-native';
-import {colors} from '../../utilities'
+import React from "react";
+import { StyleSheet, View, Text, Image } from "react-native";
+import { colors } from "../../utilities";
 
 export default function ChefInfo(props) {
-  const { chefName, chefImage, chefId } = props.selectedFoodDetails
+  const { chefName, chefImage, chefId } = props.selectedFoodDetails;
 
   return (
     <View style={styles.container}>
-      <Image source={{
-        uri: chefImage,
-        width: 50,
-        height: 50
-      }} />
+      <Image
+        source={{
+          uri: chefImage,
+          width: 50,
+          height: 50,
+        }}
+      />
       <View style={styles.chefDetails}>
         <Text style={styles.chefName}>{chefName}</Text>
-        <Text style={styles.chefId}>{chefId} Listing(s)</Text>  
+        <Text style={styles.chefId}>{chefId} Listing(s)</Text>
       </View>
     </View>
   );
@@ -22,7 +24,7 @@ export default function ChefInfo(props) {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 15,
     borderTopWidth: 1,
     borderTopColor: colors.dividerColor,
@@ -32,9 +34,9 @@ const styles = StyleSheet.create({
   },
   chefName: {
     marginTop: 5,
-    marginBottom: 5
+    marginBottom: 5,
   },
   chefId: {
-    color: colors.headingTheme
-  }
+    color: colors.headingTheme,
+  },
 });

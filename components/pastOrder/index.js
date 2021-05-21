@@ -1,75 +1,84 @@
-import React, {useContext} from 'react'
-import { View, Text, StyleSheet, Alert } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import { colors, xhrGet, responseMiddleWare } from '../../utilities'
-import GlobalContext from '../globalState/globalContext'
-import UIElems from '../uiElems'
-import _ from 'lodash'
+import React, { useContext } from "react";
+import { View, Text, StyleSheet, Alert } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { colors, xhrGet, responseMiddleWare } from "../../utilities";
+import GlobalContext from "../globalState/globalContext";
+import UIElems from "../uiElems";
+import _ from "lodash";
 
-export default function PastOrder(props){
-  const { pastOrder } = props
-  const { Button } = UIElems
-  const { chefId, status, restaurantName, date, amount, orders } = pastOrder 
-  const { setCart } = useContext(GlobalContext)
-  let orderItems = ''
+export default function PastOrder(props) {
+  const { pastOrder } = props;
+  const { Button } = UIElems;
+  const { chefId, status, restaurantName, date, amount, orders } = pastOrder;
+  const { setCart } = useContext(GlobalContext);
+  let orderItems = "";
 
   const getStyleStatus = (status) => {
-    if(status === 'Delivered') {
-      return styles.delivered()
+    if (status === "Delivered") {
+      return styles.delivered();
     }
-    return styles.cancelled()
-  }
+    return styles.cancelled();
+  };
 
   const order = (item, key) => {
-    orderItems += `${item.itemName} x ${item.quantity}`
-    if(key === orders.length -1){
-      return orderItems
+    orderItems += `${item.itemName} x ${item.quantity}`;
+    if (key === orders.length - 1) {
+      return orderItems;
     } else {
-      orderItems += ', '
+      orderItems += ", ";
     }
-  }
+  };
 
-  const globalStorage = global.storage
+  const globalStorage = global.storage;
   const handleResponse = (response) => {
-    reorderMenu(response)
-  }
+    reorderMenu(response);
+  };
   const reorder = () => {
-    globalStorage.load({
-      key: 'loginState'
-    })
-    .then(res => {
-      xhrGet(`/restaurants/id/${chefId}`, {headers: {
-        'x-access-token': res.token
-      }})
-      .then(response => {
-        responseMiddleWare(response.data, handleResponse, globalStorage)
+    globalStorage
+      .load({
+        key: "loginState",
       })
-    })
-    .catch(err => {
-      alert('Unable to fetch the record. Please try later.')
-    })
-  }
+      .then((res) => {
+        xhrGet(`/restaurants/id/${chefId}`, {
+          headers: {
+            "x-access-token": res.token,
+          },
+        }).then((response) => {
+          responseMiddleWare(response.data, handleResponse, globalStorage);
+        });
+      })
+      .catch((err) => {
+        alert("Unable to fetch the record. Please try later.");
+      });
+  };
 
   const reorderMenu = (restaurantMenu) => {
     const orderFromReorder = () => {
-      const foodItemToOrder = {}
-      for(var item in orders){
-        const orderedItem = orders[item]
-        const itemInCurMenu = _.find(restaurantMenu.menu, {id: orderedItem['itemId']})
-        foodItemToOrder[orderedItem['itemId']] = {
-          quantity: orderedItem['quantity'],
-          price: itemInCurMenu['price']
-        }
+      const foodItemToOrder = {};
+      for (var item in orders) {
+        const orderedItem = orders[item];
+        const itemInCurMenu = _.find(restaurantMenu.menu, {
+          id: orderedItem["itemId"],
+        });
+        foodItemToOrder[orderedItem["itemId"]] = {
+          quantity: orderedItem["quantity"],
+          price: itemInCurMenu["price"],
+        };
       }
-      setCart(Object.assign({}, {
-        chefId: String(chefId),
-        restaurantName: restaurantMenu.details.name,
-        items: foodItemToOrder
-      }))
+      setCart(
+        Object.assign(
+          {},
+          {
+            chefId: String(chefId),
+            restaurantName: restaurantMenu.details.name,
+            items: foodItemToOrder,
+          }
+        )
+      );
       window.setTimeout(() => {
-        props.navigation.navigate('Checkout')
-      }, 500)
-    }
+        props.navigation.navigate("Checkout");
+      }, 500);
+    };
 
     Alert.alert(
       "Confirm",
@@ -77,29 +86,38 @@ export default function PastOrder(props){
       [
         {
           text: "Cancel",
-          style: "cancel"
+          style: "cancel",
         },
-        { text: "OK", onPress: orderFromReorder }
+        { text: "OK", onPress: orderFromReorder },
       ]
-    )
-  }
+    );
+  };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => props.navigation.navigate('Details', {chefId: String(chefId)})}>
+      <TouchableOpacity
+        onPress={() =>
+          props.navigation.navigate("Details", { chefId: String(chefId) })
+        }
+      >
         <View style={styles.nameContainer}>
           <Text style={styles.restaurantName}>{restaurantName}</Text>
-          <Text style={ getStyleStatus(status) }>{status}</Text>
+          <Text style={getStyleStatus(status)}>{status}</Text>
         </View>
         <Text style={styles.billedAmount}>Billed amount: ₹{amount}</Text>
-        
+
         <Text style={styles.orderItems}>Items:</Text>
-        <Text>{ orders.map(order) }</Text>
+        <Text>{orders.map(order)}</Text>
         <Text style={styles.date}>{date}</Text>
       </TouchableOpacity>
-      <Button action={ reorder } type="primary" label="Reorder" containerStyles={{marginTop: 15, width: 150}} />
+      <Button
+        action={reorder}
+        type="primary"
+        label="Reorder"
+        containerStyles={{ marginTop: 15, width: 150 }}
+      />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -107,28 +125,29 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 15,
     borderBottomWidth: 1,
-    borderBottomColor: colors.dividerColor
+    borderBottomColor: colors.dividerColor,
   },
   nameContainer: {
-    flexDirection: 'row'
+    flexDirection: "row",
   },
   billedAmount: {
     marginTop: 5,
   },
   restaurantName: {
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   orderStatus: {
-    alignItems: 'flex-end',
-    alignContent: 'flex-end',
-    textAlign: 'right',
+    alignItems: "flex-end",
+    alignContent: "flex-end",
+    textAlign: "right",
     flex: 1,
   },
   date: {
     fontSize: 11,
   },
-  cancelled: () => Object.assign({color: colors.formErrorColor}, styles.orderStatus),
-  delivered: () => Object.assign({color: colors.success}, styles.orderStatus),
+  cancelled: () =>
+    Object.assign({ color: colors.formErrorColor }, styles.orderStatus),
+  delivered: () => Object.assign({ color: colors.success }, styles.orderStatus),
   orderItems: {
     paddingTop: 15,
   },
@@ -140,6 +159,6 @@ const styles = StyleSheet.create({
   },
   reorderButtonText: {
     color: colors.white,
-    textAlign: 'center'
-  }
-})
+    textAlign: "center",
+  },
+});

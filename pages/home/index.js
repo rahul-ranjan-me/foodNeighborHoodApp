@@ -1,43 +1,45 @@
-import React, {useState, useEffect} from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { Platform, StyleSheet, View } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
-import { TopNav, TopFood, FooterNav } from '../../components'
-import { colors, xhrGet, responseMiddleWare } from '../../utilities';
+import { TopNav, TopFood, FooterNav } from "../../components";
+import { colors, xhrGet, responseMiddleWare } from "../../utilities";
 
-export default function Home({route, navigation}) {
-  const [ topFoods, setTopFoods ] = useState([])
+export default function Home({ navigation }) {
+  const [topFoods, setTopFoods] = useState([]);
   const isFocused = useIsFocused();
-
-  const globalStorage = global.storage
+  const globalStorage = global.storage;
   const handleResponse = (response) => {
-    setTopFoods(response)
-  }
+    setTopFoods(response);
+  };
+
   const getTopFoods = (q) => {
-    globalStorage.load({
-      key: 'loginState'
-    })
-    .then(res => {
-      let urlForData
-      if(q && q.length > 0) {
-        urlForData = `/restaurants/search/tagged?q=${q}`
-      } else {
-        urlForData = `/restaurants/top10`
-      }
-      xhrGet(urlForData, { headers: {
-        'x-access-token': res.token
-      }})
-      .then(response => {
-        responseMiddleWare(response.data, handleResponse, storage)
+    globalStorage
+      .load({
+        key: "loginState",
       })
-    })
-    .catch(err => {
-      alert('Unable to fetch the record. Please try later.')
-    })
-  }
+      .then((res) => {
+        let urlForData;
+        if (q && q.length > 0) {
+          urlForData = `/restaurants/search/tagged?q=${q}`;
+        } else {
+          urlForData = `/restaurants/top10`;
+        }
+        xhrGet(urlForData, {
+          headers: {
+            "x-access-token": res.token,
+          },
+        }).then((response) => {
+          responseMiddleWare(response.data, handleResponse, storage);
+        });
+      })
+      .catch((err) => {
+        alert("Unable to fetch the record. Please try later.");
+      });
+  };
 
   useEffect(() => {
-    getTopFoods()
-  }, [isFocused])
+    getTopFoods();
+  }, [isFocused]);
 
   return (
     <View style={styles.container}>
@@ -52,8 +54,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.baseColor,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: Platform.OS === 'ios' ? 30 : 0
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: Platform.OS === "ios" ? 30 : 0,
   },
 });

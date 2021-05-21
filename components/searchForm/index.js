@@ -1,20 +1,22 @@
-import React from 'react'
-import { View, Text, StyleSheet, TextInput } from 'react-native'
-import { colors } from '../../utilities'
+import React from "react";
+import { View, Text, StyleSheet, TextInput } from "react-native";
+import { colors } from "../../utilities";
 
 export default function SearchForm(props) {
-
   const getSearchResult = (text) => {
-    props.onSearch(text)
-  }
+    props.onSearch(text);
+  };
 
-  return(
+  return (
     <View style={styles.container}>
-      <TextInput autoCapitalize='none' style={styles.textInput} 
-        onChangeText={(text) => getSearchResult(text)} 
-        placeholder="Search, minimum 3 characters required" />
+      <TextInput
+        autoCapitalize="none"
+        style={styles.textInput}
+        onChangeText={(text) => getSearchResult(text)}
+        placeholder="Search, minimum 3 characters required"
+      />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -31,4 +33,4 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondaryCallActionHover,
     fontSize: 15,
   },
-})
+});

@@ -1,34 +1,38 @@
-import React, { useEffect, useState } from 'react'
-import topNav from '../../fakeJson/topNav'
-import { colors } from '../../utilities'
+import React, { useEffect, useState } from "react";
+import topNav from "../../fakeJson/topNav";
+import { colors } from "../../utilities";
 
-import { 
-  ScrollView, 
-  StyleSheet, 
-  Text, 
-  TouchableOpacity, 
-  View 
-} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 export default function TopNav(props) {
-  const [topNavs, SetTopNavs] = useState([])
+  const [topNavs, SetTopNavs] = useState([]);
 
   useEffect(() => {
-    SetTopNavs(topNav)
-  })
+    SetTopNavs(topNav);
+  });
 
   const createTopNav = (nav, key) => {
     return (
-      <TouchableOpacity key={key} style={styles.button} onPress={() => props.getTopFoods(nav.name)}>
+      <TouchableOpacity
+        key={key}
+        style={styles.button}
+        onPress={() => props.getTopFoods(nav.name)}
+      >
         <Text>{nav.name}</Text>
       </TouchableOpacity>
-    )
-  }
+    );
+  };
 
   return (
     <View style={styles.container}>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          {topNavs.map(createTopNav)}
+        {topNavs.map(createTopNav)}
       </ScrollView>
     </View>
   );
@@ -36,10 +40,10 @@ export default function TopNav(props) {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignContent: 'space-around',
-    padding: 10
+    flexDirection: "row",
+    alignItems: "center",
+    alignContent: "space-around",
+    padding: 10,
   },
   button: {
     color: colors.textColorDark,
